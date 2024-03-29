@@ -11,6 +11,7 @@
   <title>RuangAdmin - Charts</title>
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link href="css/ruang-admin.min.css" rel="stylesheet">
 </head>
 
@@ -324,6 +325,65 @@
                 <div class="card-body">
                   <div class="chart-area">
                     <canvas id="myAreaChart"></canvas>
+                    <script>
+                      // PHP code to fetch ticket count data month-wise for the current year
+                      <?php
+                      include 'db_config.php'; // Include your database configuration file
+              
+                      // Get current year
+                      $currentYear = date('Y');
+              
+                      // SQL query to fetch ticket count month-wise for the current year
+                      $sql = "SELECT MONTH(created_at) AS month, COUNT(*) AS count 
+                              FROM tickets 
+                              WHERE YEAR(created_at) = $currentYear 
+                              GROUP BY MONTH(created_at)";
+              
+                      $result = $conn->query($sql);
+              
+                      // Initialize arrays to store month names and ticket counts
+                      $months = [];
+                      $ticketCounts = [];
+              
+                      // Fetch data and store in arrays
+                      if ($result->num_rows > 0) {
+                          while ($row = $result->fetch_assoc()) {
+                              $months[] = date('M', mktime(0, 0, 0, $row['month'], 1)); // Convert month number to name
+                              $ticketCounts[] = $row['count'];
+                          }
+                      }
+                      ?>
+              
+                      // JavaScript code for the chart using fetched data
+                      const months = <?php echo json_encode($months); ?>; // Month names array
+                      const ticketCounts = <?php echo json_encode($ticketCounts); ?>; // Ticket counts array
+              
+                      // Get the canvas element and context
+                      const ctx = document.getElementById('myAreaChart').getContext('2d');
+              
+                      // Create the area chart
+                      const myAreaChart = new Chart(ctx, {
+                          type: 'line', // Use 'line' type for area chart
+                          data: {
+                              labels: months, // X-axis labels
+                              datasets: [{
+                                  label: 'Ticket Count',
+                                  data: ticketCounts, // Y-axis data (ticket counts)
+                                  fill: true, // Fill the area below the line
+                                  backgroundColor: 'rgba(75, 192, 192, 0.2)', // Area background color
+                                  borderColor: 'rgba(75, 192, 192, 1)', // Line color
+                                  borderWidth: 2 // Line width
+                              }]
+                          },
+                          options: {
+                              scales: {
+                                  y: {
+                                      beginAtZero: true // Start y-axis from zero
+                                  }
+                              }
+                          }
+                      });
+                  </script>
                   </div>
                   <hr>
                   Styling for the area chart can be found in the

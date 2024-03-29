@@ -51,6 +51,9 @@ $new_open_count = $result_new_open->fetch_assoc()['new_open_count'];
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="css/ruang-admin.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="index.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body id="page-top">
@@ -75,11 +78,11 @@ $new_open_count = $result_new_open->fetch_assoc()['new_open_count'];
       </div>
       <li class="nav-item">
         <a class="nav-link" href="create_tickets.php">
-          <i class="fas fa-fw fa-palette"></i>
-          <span>Create Ticket</span>
+        <i class="fas fa-ticket-alt"></i>
+          <span>Create T3 Ticket</span>
         </a>
       </li>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
           aria-expanded="true" aria-controls="collapseBootstrap">
           <i class="far fa-fw fa-window-maximize"></i>
@@ -87,7 +90,6 @@ $new_open_count = $result_new_open->fetch_assoc()['new_open_count'];
         </a>
         <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <!-- <h6 class="collapse-header">Bootstrap UI</h6> -->
             <a class="collapse-item" href="alerts.html">Alerts</a>
             <a class="collapse-item" href="buttons.html">Buttons</a>
             <a class="collapse-item" href="dropdowns.html">Dropdowns</a>
@@ -96,27 +98,26 @@ $new_open_count = $result_new_open->fetch_assoc()['new_open_count'];
             <a class="collapse-item" href="progress-bar.html">Progress Bars</a>
           </div>
         </div>
-      </li>
+      </li> -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
           aria-controls="collapseForm">
-          <i class="fab fa-fw fa-wpforms"></i>
-          <span>Tickets</span>
+          <i class="fas fa-tasks"></i>
+          <span>View Tickets</span>
         </a>
         <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <!-- <h6 class="collapse-header">Tickets</h6> -->
             <a class="collapse-item" href="open_tickets.php">Open</a>
             <a class="collapse-item" href="closed_tickets.php">Closed</a>
-            <a class="collapse-item" href="form_basics.html">Pending</a>
             <a class="collapse-item" href="inprogress_tickets.php">In-Progress</a>
-            <a class="collapse-item" href="form_basics.html">All Tickets</a>
-            <a class="collapse-item" href="form_basics.html">Form Basics</a>
-            <a class="collapse-item" href="form_advanceds.html">Form Advanceds</a>
+            <a class="collapse-item" href="all_ticket.php">All Tickets</a>
+            <!-- <a class="collapse-item" href="form_basics.html">Form Basics</a>
+            <a class="collapse-item" href="form_advanceds.html">Form Advanceds</a> -->
           </div>
         </div>
       </li>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
           aria-controls="collapseTable">
           <i class="fas fa-fw fa-table"></i>
@@ -129,13 +130,13 @@ $new_open_count = $result_new_open->fetch_assoc()['new_open_count'];
             <a class="collapse-item" href="datatables.html">DataTables</a>
           </div>
         </div>
-      </li>
-      <li class="nav-item">
+      </li> -->
+      <!-- <li class="nav-item">
         <a class="nav-link" href="ui-colors.html">
           <i class="fas fa-fw fa-palette"></i>
           <span>UI Colors</span>
         </a>
-      </li>
+      </li> -->
       <hr class="sidebar-divider">
       <div class="sidebar-heading">
         Examples
@@ -143,24 +144,30 @@ $new_open_count = $result_new_open->fetch_assoc()['new_open_count'];
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
           aria-controls="collapsePage">
-          <i class="fas fa-fw fa-columns"></i>
-          <span>Pages</span>
+          <i class="fas fa-user-friends"></i>
+          <span>Manage Team</span>
         </a>
         <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <!-- <h6 class="collapse-header">Example Pages</h6> -->
-            <a class="collapse-item" href="login.php">Login</a>
-            <a class="collapse-item" href="register.php">Add Tier-3 User</a>
-            <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a>
+            <!-- <a class="collapse-item" href="login.php">Login</a> -->
+            <a class="collapse-item" href="register.php">Add Member</a>
+            <a class="collapse-item" href="view_members.php">View Members</a>
+            <!-- <a class="collapse-item" href="blank.html">Blank Page</a> -->
           </div>
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>Charts</span>
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#knowledgebase" aria-expanded="true"
+          aria-controls="knowledgebase">
+        <i class="fas fa-laptop-code"></i>
+          <span>Knowledge Base</span>
         </a>
+        <div id="knowledgebase" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <!-- <a class="collapse-item" href="#">Add Knowledge Base</a> -->
+            <a class="collapse-item" href="knowledgebase.php">Manage Knowledge Base</a>
+          </div>
       </li>
       <hr class="sidebar-divider">
       <div class="version" id="version-ruangadmin"></div>
@@ -352,7 +359,7 @@ $new_open_count = $result_new_open->fetch_assoc()['new_open_count'];
                       </div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-folder-open fa-4x text-warning"></i>
+                      <i class="fas fa-envelope-open fa-4x text-danger"></i>
                     </div>
                   </div>
                 </div>
@@ -372,7 +379,7 @@ $new_open_count = $result_new_open->fetch_assoc()['new_open_count'];
                       </div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-cog fa-4x text-success"></i>
+                      <i class="fas fa-envelope fa-4x text-success"></i>
                     </div>
                   </div>
                 </div>
@@ -412,7 +419,7 @@ $new_open_count = $result_new_open->fetch_assoc()['new_open_count'];
                       </div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-comments fa-4x text-danger"></i>
+                      <i class="fas fa-tasks fa-4x text-success"></i>
                     </div>
                   </div>
                 </div>
@@ -423,7 +430,7 @@ $new_open_count = $result_new_open->fetch_assoc()['new_open_count'];
             <div class="col-xl-8 col-lg-7">
               <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Monthly Recap Report</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Month-wise Tickets Counts</h6>
                   <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                       aria-haspopup="true" aria-expanded="false">
@@ -440,8 +447,79 @@ $new_open_count = $result_new_open->fetch_assoc()['new_open_count'];
                   </div>
                 </div>
                 <div class="card-body">
-                  <div class="chart-area">
-                    <canvas id="myAreaChart"></canvas>
+                  <div class="chart-are">
+                    <canvas id="mychart" width="500" height="140"></canvas>
+                    <script>
+                    // PHP code to fetch ticket count data month-wise for the current year
+                    <?php
+                    include 'db_config.php'; // Include your database configuration file
+
+                    // Get current year
+                    $currentYear = date('Y');
+
+                    // Initialize arrays to store month names and ticket counts
+                    $months = [];
+                    $ticketCounts = [];
+
+                    // Fill the arrays with all months and initialize ticket counts to 0
+                    for ($month = 1; $month <= 12; $month++) {
+                        $months[] = date('M', mktime(0, 0, 0, $month, 1)); // Month names array
+                        $ticketCounts[] = 0; // Initialize ticket counts to 0
+                    }
+
+                    // SQL query to fetch ticket count month-wise for the current year
+                    $sql = "SELECT MONTH(created_at) AS month, COUNT(*) AS count 
+                            FROM tickets 
+                            WHERE YEAR(created_at) = $currentYear 
+                            GROUP BY MONTH(created_at)";
+
+                    $result = $conn->query($sql);
+
+                    // Fill the ticket counts array with actual ticket counts
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            $monthIndex = $row['month'] - 1; // Month index (0-based)
+                            $ticketCounts[$monthIndex] = $row['count'];
+                        }
+                    }
+
+                    // Define colors for each month dynamically
+                    $colors = [];
+                    for ($i = 0; $i < count($months); $i++) {
+                        $colors[] = 'rgba(' . rand(0, 255) . ', ' . rand(0, 255) . ', ' . rand(0, 255) . ', 0.7)';
+                    }
+                    ?>
+
+                    // JavaScript code for the chart using fetched data and dynamic colors
+                    const months = <?php echo json_encode($months); ?>; // Month names array
+                    const ticketCounts = <?php echo json_encode($ticketCounts); ?>; // Ticket counts array
+                    const colors = <?php echo json_encode($colors); ?>; // Colors array
+
+                    // Get the canvas element and context
+                    const ctx = document.getElementById('mychart').getContext('2d');
+
+                    // Create the area chart
+                    const mychart = new Chart(ctx, {
+                        type: 'bar', // Use 'bar' type for bar chart
+                        data: {
+                            labels: months, // X-axis labels
+                            datasets: [{
+                                label: 'Monthly Tickets Count',
+                                data: ticketCounts, // Y-axis data (ticket counts)
+                                backgroundColor: colors, // Dynamic colors for each bar
+                                borderColor: 'rgba(0, 0, 0, 0.8)', // Border color for bars
+                                borderWidth: 0 // Border width for bars
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true // Start y-axis from zero
+                                }
+                            }
+                        }
+                    });
+                    </script>
                   </div>
                 </div>
               </div>
@@ -452,10 +530,10 @@ $new_open_count = $result_new_open->fetch_assoc()['new_open_count'];
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <h6 class="m-0 font-weight-bold text-primary">Products Sold</h6>
                   <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle btn btn-primary btn-sm" href="#" role="button" id="dropdownMenuLink"
+                    <!-- <a class="dropdown-toggle btn btn-primary btn-sm" href="#" role="button" id="dropdownMenuLink"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       Month <i class="fas fa-chevron-down"></i>
-                    </a>
+                    </a> -->
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                       aria-labelledby="dropdownMenuLink">
                       <div class="dropdown-header">Select Periode</div>
@@ -467,51 +545,14 @@ $new_open_count = $result_new_open->fetch_assoc()['new_open_count'];
                   </div>
                 </div>
                 <div class="card-body">
-                  <div class="mb-3">
-                    <div class="small text-gray-500">Oblong T-Shirt
-                      <div class="small float-right"><b>600 of 800 Items</b></div>
-                    </div>
-                    <div class="progress" style="height: 12px;">
-                      <div class="progress-bar bg-warning" role="progressbar" style="width: 80%" aria-valuenow="80"
-                        aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <div class="small text-gray-500">Gundam 90'Editions
-                      <div class="small float-right"><b>500 of 800 Items</b></div>
-                    </div>
-                    <div class="progress" style="height: 12px;">
-                      <div class="progress-bar bg-success" role="progressbar" style="width: 70%" aria-valuenow="70"
-                        aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <div class="small text-gray-500">Rounded Hat
-                      <div class="small float-right"><b>455 of 800 Items</b></div>
-                    </div>
-                    <div class="progress" style="height: 12px;">
-                      <div class="progress-bar bg-danger" role="progressbar" style="width: 55%" aria-valuenow="55"
-                        aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <div class="small text-gray-500">Indomie Goreng
-                      <div class="small float-right"><b>400 of 800 Items</b></div>
-                    </div>
-                    <div class="progress" style="height: 12px;">
-                      <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50"
-                        aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <div class="small text-gray-500">Remote Control Car Racing
-                      <div class="small float-right"><b>200 of 800 Items</b></div>
-                    </div>
-                    <div class="progress" style="height: 12px;">
-                      <div class="progress-bar bg-success" role="progressbar" style="width: 30%" aria-valuenow="30"
-                        aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
+                <div id="clockContainer">
+        <div id="hour"></div>
+        <div id="minute"></div>
+        <div id="second"></div>
+    </div>
+                  
+                  
+                  
                 </div>
                 <div class="card-footer text-center">
                   <a class="m-0 small text-primary card-link" href="#">View More <i

@@ -97,13 +97,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <div class="sidebar-heading">
         Features
       </div>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="create_tickets.php">
           <i class="fas fa-fw fa-palette"></i>
-          <span>Create Ticket</span>
+          <span>Create T3 Ticket</span>
         </a>
       </li>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
           aria-expanded="true" aria-controls="collapseBootstrap">
           <i class="far fa-fw fa-window-maximize"></i>
@@ -120,8 +120,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <a class="collapse-item" href="progress-bar.html">Progress Bars</a>            
           </div>
         </div>
-      </li>
-      <li class="nav-item active">
+      </li> -->
+      <!-- <li class="nav-item active">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm"
         aria-expanded="true" aria-controls="collapseForm">
           <i class="fab fa-fw fa-wpforms"></i>
@@ -135,27 +135,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <a class="collapse-item" href="form_advanceds.html">Form Advanceds</a>
           </div>
         </div>
-      </li>
+      </li> -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
           aria-controls="collapseTable">
           <i class="fas fa-fw fa-table"></i>
-          <span>Tables</span>
+          <span>View Tickets</span>
         </a>
         <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Tables</h6>
-            <a class="collapse-item" href="simple-tables.html">Simple Tables</a>
-            <a class="collapse-item" href="datatables.html">DataTables</a>
+            <a class="collapse-item" href="open_tickets.php">Open</a>
+            <a class="collapse-item" href="closed_tickets.php">Closed</a>
+            <a class="collapse-item" href="inprogress_tickets.php">In-Progress</a>
+            <a class="collapse-item" href="all_ticket.php">All Tickets</a>
           </div>
         </div>
       </li>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link" href="ui-colors.html">
           <i class="fas fa-fw fa-palette"></i>
           <span>UI Colors</span>
         </a>
-      </li>
+      </li> -->
       <hr class="sidebar-divider">
       <div class="sidebar-heading">
         Examples
@@ -164,24 +166,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
           aria-controls="collapsePage">
           <i class="fas fa-fw fa-columns"></i>
-          <span>Pages</span>
+          <span>Manage Team</span>
         </a>
         <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Example Pages</h6>
-            <a class="collapse-item" href="login.html">Login</a>
-            <a class="collapse-item" href="register.html">Register</a>
-            <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a>
+          <a class="collapse-item" href="register.php">Add Member</a>
+            <a class="collapse-item" href="view_members.php">View Members</a>
           </div>
         </div>
       </li>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link" href="charts.html">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>Charts</span>
         </a>
-      </li>
+      </li> -->
       <hr class="sidebar-divider">
       <div class="version" id="version-ruangadmin"></div>
     </ul>
@@ -382,7 +381,7 @@ if (isset($_GET['ticket_id'])) {
         echo "<p>" . $ticket["subject"] . "</p>";
         echo "<label for=exampleInputPassword1 class='m-0 font-weight-normal text-info'>Issue Description</label>";
         echo "<p>" . $ticket["description"] . "</p>";
-        echo "<label for=exampleInputPassword1 class='m-0 font-weight-normal text-info'>Attachment</label>";
+        echo "<p><label for=exampleFormControlInput1 class='m-0 font-weight-normal text-info'>Attachment</label></p>";
         if (!empty($ticket["file_path"])) {
             $fileNames = explode(",", $ticket["file_path"]); // Split file names by comma
         
@@ -397,10 +396,9 @@ if (isset($_GET['ticket_id'])) {
         } else {
             echo "No files attached.";
         }
-        echo "<label for=exampleInputPassword1 class='m-0 font-weight-normal text-info'>Ticket Status</label>";
+        echo "<p><label for='exampleFormControlInput1' class='m-0 font-weight-normal text-info'>Ticket Status</label></p>";
         echo "<p>";
         $status = $ticket["status"];
-        
         if ($status == 'Closed') {
             echo '<span class="badge badge-success">' . $status . '</span>';
         } elseif ($status == 'Open') {
@@ -410,11 +408,8 @@ if (isset($_GET['ticket_id'])) {
         } else {
             echo $status; // Handle any other status values here
         }
-        
         echo "</p>";
-        
         echo "</div>";
-
         $sql_replies = "SELECT r.*, u.username FROM ticket_replies r INNER JOIN users u ON r.user_id = u.user_id WHERE r.ticket_id = $ticket_id ORDER BY r.created_at ASC";
         $result_replies = $conn->query($sql_replies);
 
@@ -458,7 +453,7 @@ if ($_SESSION['role'] == 'admin') {
         <form method="POST" action="">
             <input type="hidden" name="ticket_id" value="<?php echo $ticket_id; ?>">
             <label for="exampleInputPassword1"></label>
-            <label for=exampleInputPassword1 class="m-0 font-weight-normal text-info">Ticket Status</label>
+            <label for=exampleInputPassword1 class="m-0 font-weight-normal text-info">Status Update</label>
                       <select name="status" id="status" class="form-control form-control-sm mb-3">
                             <option value="Open" <?php if ($ticket['status'] == 'Open') echo 'selected'; ?>>Open</option>
                             <option value="In-Progress" <?php if ($ticket['status'] == 'In-Progress') echo 'selected'; ?>>In-Progress</option>

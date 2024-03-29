@@ -9,7 +9,7 @@
     include 'db_config.php';
 
     // Fetch closed tickets for admin
-    $sql = "SELECT * FROM tickets WHERE status = 'open' ORDER BY created_at DESC";
+    $sql = "SELECT * FROM tickets ORDER BY created_at DESC";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -104,7 +104,7 @@
             <a class="collapse-item active" href="open_tickets.php">Open</a>
             <a class="collapse-item" href="closed_tickets.php">Closed</a>
             <a class="collapse-item" href="inprogress_tickets.php">In-Progress</a>
-            <a class="collapse-item" href="all_ticket.php">All Tickets</a>
+            <a class="collapse-item" href="#">All Tickets</a>
           </div>
         </div>
       </li>
@@ -131,18 +131,12 @@
           </div>
         </div>
       </li>
-      <li class="nav-item">
-      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#knowledgebase" aria-expanded="true"
-          aria-controls="knowledgebase">
-        <i class="fas fa-laptop-code"></i>
-          <span>Knowledge Base</span>
+      <!-- <li class="nav-item">
+        <a class="nav-link" href="charts.html">
+          <i class="fas fa-fw fa-chart-area"></i>
+          <span>Charts</span>
         </a>
-        <div id="knowledgebase" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <!-- <a class="collapse-item" href="#">Add Knowledge Base</a> -->
-            <a class="collapse-item" href="knowledgebase.php">Manage Knowledge Base</a>
-          </div>
-      </li>
+      </li> -->
       <hr class="sidebar-divider">
       <div class="version" id="version-ruangadmin"></div>
     </ul>
@@ -379,9 +373,9 @@
                         $status = $ticket['status'];
                         if ($status == 'Closed') {
                             echo '<span class="badge badge-success">' . $status . '</span>';
-                        } elseif ($status == 'Open') {
+                        } elseif ($status == 'open') {
                             echo '<span class="badge badge-danger">' . $status . '</span>';
-                        } elseif ($status == 'Working') {
+                        } elseif ($status == 'In-Progress') {
                             echo '<span class="badge badge-warning">' . $status . '</span>';
                         } else {
                             echo $status; // Handle any other status values here
@@ -451,7 +445,17 @@
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="js/ruang-admin.min.js"></script>
+<!-- Page level plugins -->
+<script src="vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
+  <!-- Page level custom scripts -->
+  <script>
+    $(document).ready(function () {
+      $('#dataTable').DataTable(); // ID From dataTable 
+      $('#dataTableHover').DataTable(); // ID From dataTable with Hover
+    });
+  </script>
 </body>
 
 </html>

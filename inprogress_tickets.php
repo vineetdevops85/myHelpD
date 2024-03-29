@@ -1,19 +1,23 @@
 <?php
     session_start();
+
     if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'admin') {
-    header("Location: login.php");
-    exit();
+        header("Location: login.php");
+        exit();
     }
+
     include 'db_config.php';
-    // Fetch open tickets for admin
+
+    // Fetch closed tickets for admin
     $sql = "SELECT * FROM tickets WHERE status = 'In-Progress' ORDER BY created_at DESC";
     $result = $conn->query($sql);
+
     if ($result->num_rows > 0) {
-    $open_tickets = $result->fetch_all(MYSQLI_ASSOC);
+        $closed_tickets = $result->fetch_all(MYSQLI_ASSOC);
     } else {
-    $open_tickets = [];
+        $closed_tickets = [];
     }
-?>
+    ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,7 +28,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link href="img/logo/logo.png" rel="icon">
-  <title>myHelpDesk - Open Ticket</title>
+  <title>myHelpDesk - In-Progress Ticket</title>
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="css/ruang-admin.min.css" rel="stylesheet">
@@ -51,6 +55,12 @@
         Features
       </div>
       <li class="nav-item">
+        <a class="nav-link" href="create_tickets.php">
+          <i class="fas fa-fw fa-palette"></i>
+          <span>Create T3 Ticket</span>
+        </a>
+      </li>
+      <!-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
           aria-expanded="true" aria-controls="collapseBootstrap">
           <i class="far fa-fw fa-window-maximize"></i>
@@ -67,8 +77,8 @@
             <a class="collapse-item" href="progress-bar.html">Progress Bars</a>
           </div>
         </div>
-      </li>
-      <li class="nav-item">
+      </li> -->
+      <!-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
           aria-controls="collapseForm">
           <i class="fab fa-fw fa-wpforms"></i>
@@ -81,27 +91,29 @@
             <a class="collapse-item" href="form_advanceds.html">Form Advanceds</a>
           </div>
         </div>
-      </li>
+      </li> -->
       <li class="nav-item active">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
           aria-controls="collapseTable">
           <i class="fas fa-fw fa-table"></i>
-          <span>Tables</span>
+          <span>View Tickets</span>
         </a>
         <div id="collapseTable" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Tables</h6>
-            <a class="collapse-item active" href="simple-tables.html">Simple Tables</a>
-            <a class="collapse-item" href="datatables.html">DataTables</a>
+            <h6 class="collapse-header">Tickets</h6>
+            <a class="collapse-item" href="open_tickets.php">Open</a>
+            <a class="collapse-item" href="closed_tickets.php">Closed</a>
+            <a class="collapse-item active" href="inprogress_tickets.php">In-Progress</a>
+            <a class="collapse-item" href="all_ticket.php">All Tickets</a>
           </div>
         </div>
       </li>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link" href="ui-colors.html">
           <i class="fas fa-fw fa-palette"></i>
           <span>UI Colors</span>
         </a>
-      </li>
+      </li> -->
       <hr class="sidebar-divider">
       <div class="sidebar-heading">
         Examples
@@ -110,23 +122,26 @@
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
           aria-controls="collapsePage">
           <i class="fas fa-fw fa-columns"></i>
-          <span>Pages</span>
+          <span>Manage Team</span>
         </a>
         <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Example Pages</h6>
-            <a class="collapse-item" href="login.html">Login</a>
-            <a class="collapse-item" href="register.html">Register</a>
-            <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a>
+            <a class="collapse-item" href="register.php">Add Member</a>
+            <a class="collapse-item" href="view_members.php">View Members</a>
           </div>
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>Charts</span>
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#knowledgebase" aria-expanded="true"
+          aria-controls="knowledgebase">
+        <i class="fas fa-laptop-code"></i>
+          <span>Knowledge Base</span>
         </a>
+        <div id="knowledgebase" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <!-- <a class="collapse-item" href="#">Add Knowledge Base</a> -->
+            <a class="collapse-item" href="knowledgebase.php">Manage Knowledge Base</a>
+          </div>
       </li>
       <hr class="sidebar-divider">
       <div class="version" id="version-ruangadmin"></div>
@@ -172,10 +187,39 @@
                 <h6 class="dropdown-header">
                   Alerts Center
                 </h6>
-                <?php
-                    // Check if there are new tickets
-                    include 'include/notification_alert.php';
-                ?>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="mr-3">
+                    <div class="icon-circle bg-primary">
+                      <i class="fas fa-file-alt text-white"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="small text-gray-500">December 12, 2019</div>
+                    <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                  </div>
+                </a>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="mr-3">
+                    <div class="icon-circle bg-success">
+                      <i class="fas fa-donate text-white"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="small text-gray-500">December 7, 2019</div>
+                    $290.29 has been deposited into your account!
+                  </div>
+                </a>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="mr-3">
+                    <div class="icon-circle bg-warning">
+                      <i class="fas fa-exclamation-triangle text-white"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="small text-gray-500">December 2, 2019</div>
+                    Spending Alert: We've noticed unusually high spending for your account.
+                  </div>
+                </a>
                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
               </div>
             </li>
@@ -295,11 +339,11 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Open Ticket</h1>
+            <h1 class="h3 mb-0 text-gray-800">In-Progress Tickets</h1>
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
-              <li class="breadcrumb-item">Tables</li>
-              <li class="breadcrumb-item active" aria-current="page">Open Ticket</li>
+              <li class="breadcrumb-item">Tickets</li>
+              <li class="breadcrumb-item active" aria-current="page">In-Progress Tickets</li>
             </ol>
           </div>
 
@@ -308,10 +352,10 @@
               <!-- Simple Tables -->
               <div class="card">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Open Ticket Details</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">In-Progress Tickets</h6>
                 </div>
                 <div class="table-responsive">
-                    <?php if (!empty($open_tickets)) : ?>
+                    <?php if (!empty($closed_tickets)) : ?>
                   <table class="table align-items-center table-flush">
                     <thead class="thead-light">
                       <tr>
@@ -324,7 +368,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($open_tickets as $ticket) : ?>
+                    <?php foreach ($closed_tickets as $ticket) : ?>
                         <tr>
                         <td><?php echo $ticket['ticket_id']; ?></td>
                         <td><?php echo $ticket['fa']; ?></td>
@@ -335,16 +379,16 @@
                         $status = $ticket['status'];
                         if ($status == 'Closed') {
                             echo '<span class="badge badge-success">' . $status . '</span>';
-                        } elseif ($status == 'Open') {
+                        } elseif ($status == 'open') {
                             echo '<span class="badge badge-danger">' . $status . '</span>';
-                        } elseif ($status == 'In-Progress') {
+                        } elseif ($status == 'Working') {
                             echo '<span class="badge badge-warning">' . $status . '</span>';
                         } else {
                             echo $status; // Handle any other status values here
                         }
                         ?>
                         </td>
-                        <td><a class="btn btn-primary btn-sm" href="view_ticket.php?ticket_id=<?php echo $ticket['ticket_id']; ?>">Details</a></td>
+                        <td><a class="btn btn-warning btn-sm" href="view_ticket.php?ticket_id=<?php echo $ticket['ticket_id']; ?>">View</a></td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -389,7 +433,7 @@
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
             <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - developed by
-              <b><a href="https://indrijunanda.gitlab.io/" target="_blank">indrijunanda</a></b>
+              <b><a href="#" target="_blank">Vineet Kumar</a></b>
             </span>
           </div>
         </div>

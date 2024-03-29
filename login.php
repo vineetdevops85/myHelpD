@@ -2,7 +2,11 @@
 session_start();
 
 if (isset($_SESSION['user_id'])) {
-    header("Location: index.php");
+    if ($_SESSION['role'] == 'admin') {
+        header("Location: index.php");
+    } elseif ($_SESSION['role'] == 'customer') {
+        header("Location: modals.html");
+    }
     exit();
 }
 
@@ -12,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // Validate username and password
+    // Validate email and password
     $sql = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
     $result = $conn->query($sql);
 
@@ -21,13 +25,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['user_id'] = $row['user_id'];
         $_SESSION['username'] = $row['username'];
         $_SESSION['role'] = $row['role'];
-        header("Location: index.php");
+
+        if ($_SESSION['role'] == 'admin') {
+            header("Location: index.php");
+        } elseif ($_SESSION['role'] == 'customer') {
+            header("Location: modals.html");
+        }
         exit();
     } else {
-        $error_message = "Invalid username or password";
+        $error_message = "Invalid email or password";
     }
 }
 ?>
+
+<!-- Your HTML login form goes here -->
 <!DOCTYPE html>
 <html lang="en">
 

@@ -3,9 +3,9 @@ include 'db_config.php';
 
 session_start();
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'admin') {
+  header("Location: login.php");
+  exit();
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -96,10 +96,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <li class="nav-item active">
         <a class="nav-link" href="create_tickets.php">
           <i class="fas fa-fw fa-palette"></i>
-          <span>Create Ticket</span>
+          <span>Create T3 Ticket</span>
         </a>
       </li>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
           aria-expanded="true" aria-controls="collapseBootstrap">
           <i class="far fa-fw fa-window-maximize"></i>
@@ -116,8 +116,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <a class="collapse-item" href="progress-bar.html">Progress Bars</a>            
           </div>
         </div>
-      </li>
-      <li class="nav-item active">
+      </li> -->
+      <!-- <li class="nav-item active">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm"
         aria-expanded="true" aria-controls="collapseForm">
           <i class="fab fa-fw fa-wpforms"></i>
@@ -131,26 +131,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <a class="collapse-item" href="form_advanceds.html">Form Advanceds</a>
           </div>
         </div>
-      </li>
+      </li> -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
           aria-controls="collapseTable">
           <i class="fas fa-fw fa-table"></i>
-          <span>Tables</span>
+          <span>View Tickets</span>
         </a>
         <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Tables</h6>
-            <a class="collapse-item" href="simple-tables.html">Simple Tables</a>
-            <a class="collapse-item" href="datatables.html">DataTables</a>
+            <a class="collapse-item" href="open_tickets.php">Open</a>
+            <a class="collapse-item" href="closed_tickets.php">Closed</a>
+            <a class="collapse-item" href="inprogress_tickets.php">In-Progress</a>
+            <a class="collapse-item" href="all_ticket.php">All Tickets</a>
+            <!-- <a class="collapse-item" href="datatables.html">DataTables</a> -->
           </div>
         </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="ui-colors.html">
-          <i class="fas fa-fw fa-palette"></i>
-          <span>UI Colors</span>
-        </a>
       </li>
       <hr class="sidebar-divider">
       <div class="sidebar-heading">
@@ -160,23 +156,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
           aria-controls="collapsePage">
           <i class="fas fa-fw fa-columns"></i>
-          <span>Pages</span>
+          <span>Manage Team</span>
         </a>
         <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Example Pages</h6>
-            <a class="collapse-item" href="login.html">Login</a>
-            <a class="collapse-item" href="register.html">Register</a>
-            <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a>
+            <a class="collapse-item" href="register.php">Add Member</a>
+            <a class="collapse-item" href="view_members.php">View Members</a>
           </div>
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>Charts</span>
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#knowledgebase" aria-expanded="true"
+          aria-controls="knowledgebase">
+        <i class="fas fa-laptop-code"></i>
+          <span>Knowledge Base</span>
         </a>
+        <div id="knowledgebase" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <!-- <a class="collapse-item" href="#">Add Knowledge Base</a> -->
+            <a class="collapse-item" href="knowledgebase.php">Manage Knowledge Base</a>
+          </div>
       </li>
       <hr class="sidebar-divider">
       <div class="version" id="version-ruangadmin"></div>
